@@ -25,6 +25,18 @@ app.add_middleware(
 
 app.include_router(resume_router)
 
+@app.get("/")
+def root():
+    return {
+        "message": "ResumeAI backend is running",
+        "status": "healthy"
+    }
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
+
+
 @app.post("/signup")
 def signup(u: UserCreate, db: Session = Depends(get_db)):
     if db.query(User).filter(User.email == u.email).first():
